@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import EndPage from "./endPage";
 
-export interface Question{
+export interface Question {
   difficulty: string;
   category: string;
   question: string;
@@ -8,66 +9,82 @@ export interface Question{
   incorrect_answers: string[];
 }
 
-export interface QuestionList{
+export interface QuestionList {
   questions: Question[];
 }
 
-const shuffleAnswers = (correct:string, incorrect:string[]):string[]=>{
+const shuffleAnswers = (correct: string, incorrect: string[]): string[] => {
   let array = [correct, ...incorrect];
-  array.sort(() => Math.random() - 0.5); 
+  array.sort(() => Math.random() - 0.5);
   return array;
-}
+};
 
-
-
-const QuestionModal = ({questions} : QuestionList) => {
-
-  const [questionNum, setQuestionNum] = useState(0)
+const QuestionModal = ({ questions }: QuestionList) => {
+  const [questionNum, setQuestionNum] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [rightAnswers, setRightAnswers] = useState(0);
+  const [gameEnded, setGameEnded] = useState(false);
   const totalQuestions = questions.length;
   const level = questions[0].difficulty;
 
   useEffect(() => {
-    setAnswers(shuffleAnswers(questions[questionNum].correct_answer, questions[questionNum].incorrect_answers));
+    setAnswers(
+      shuffleAnswers(
+        questions[questionNum].correct_answer,
+        questions[questionNum].incorrect_answers
+      )
+    );
   }, [questionNum, questions]);
 
-  const nextQuestion = (answer:string)=>{
-    if(answer === questions[questionNum].correct_answer){
-      setRightAnswers(rightAnswers + 1)
+  const nextQuestion = (answer: string) => {
+    if (questionNum + 1 === totalQuestions) {
+      setGameEnded(true);
+      setQuestionNum(0);
+    } else {
+      if (answer === questions[questionNum].correct_answer) {
+        setRightAnswers(rightAnswers + 1);
+      }
+      setQuestionNum(questionNum + 1);
     }
-    setQuestionNum(questionNum + 1);
-    if(questionNum >= totalQuestions){
-      console.log("no more questions");
-    }
-  }
+  };
 
   return (
     <div className="container">
-      {/* header */}
-      <div className="row">
-        <div className="col-sm-12">
-          <h4>Question {questionNum+1}/{totalQuestions}</h4>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-12">
-          <p>Level: {level}</p>
-        </div>
-        <div className="col-sm-12">
-          <h1>{questions[questionNum].question}</h1>
-        </div>
-        {
-          answers.map((answer)=>
-          <div className="col-sm-12">
-            <button type="button" className="btn btn-outline-secondary" onClick={()=>{nextQuestion(answer)}}>{answer}</button>
+      {!gameEnded ? (
+        <>
+          <div className="row">
+            <div className="col-sm-12">
+              <h4>
+                Question {questionNum + 1}/{totalQuestions}
+              </h4>
+            </div>
           </div>
-          )
-        }
-      </div>
-
+          <div className="row">
+            <div className="col-sm-12">
+              <p>Level: {level}</p>
+            </div>
+            <div className="col-sm-12">
+              <h1>{questions[questionNum].question}</h1>
+            </div>
+            {answers.map((answer) => (
+              <div key={answer} className="col-sm-12">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    nextQuestion(answer);
+                  }}
+                >
+                  {answer}
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <EndPage right={rightAnswers} total={totalQuestions} questions={questions}/>
+      )}
     </div>
-
 
     // <div>
     //   <div
