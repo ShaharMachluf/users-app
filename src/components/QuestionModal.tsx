@@ -46,7 +46,7 @@ const QuestionModal = ({questions} : QuestionList) => {
         </div>
         {
           answers.map((answer)=>
-          <button type="button" className="btn btn-outline-secondary">{answer}</button>)
+          <button type="button" className="btn btn-outline-secondary" onClick={()=>{setQuestionNum(questionNum+1)}}>{answer}</button>)
         }
       </div>
 
