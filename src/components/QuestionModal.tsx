@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import EndPage from "./endPage";
+import EndPage from "./EndPage";
 
 export interface Question {
   difficulty: string;

@@ -8,14 +8,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [started, setStarted] = useState(false);
 
-  //   const question: Question = {
-  //     difficulty:"easy",
-  //     category:"Science: Computers",
-  //     question: "On Twitter, what was the original character limit for a Tweet?",
-  //     correct_answer: "140",
-  //     incorrect_answers: ["120", "130", "150"]
-  // };
-
   useEffect(() => {
     axios
       .get<{ results: Question[] }>(
@@ -39,35 +31,30 @@ const App = () => {
         started ? (
           <QuestionModal questions={questions} />
         ) : (
-          <div className="container">
+          <div className="container-fluid background">
+            <div className="container">
             <div className="row">
               <div className="col-sm-12">
-                <img src="./assets/trivia.jpg" alt="trivia" className="img-thumbnail"/>
+                <h1 className="mainTitle">TRIVIA</h1>
               </div>
-              <div className="col-sm-12">
+              <div className="col-sm-5"></div>
+              <div className="col-sm-2 btn-div">
               {isLoading ? (
           <div className="spinner-border"></div>
         ) : (
-          <button type="button" className="btn btn-info" onClick={()=>setStarted(true)}>Start</button>
+          <button type="button" className="btn btn-light start-btn" onClick={()=>setStarted(true)}>Start</button>
         )}
                 
               </div>
+              <div className="col-sm-5"></div>
             </div>
           </div>
+          </div>
+          
         )
 
       }
-      {/* <div>
-        {isLoading ? (
-          <div className="spinner-border"></div>
-        ) : (
-          
-        )}
-      </div> */}
     </>
-
-    //toggle between modals
-    // )
   );
 };
 
