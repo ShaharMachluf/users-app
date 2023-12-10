@@ -1,6 +1,18 @@
 import React from "react";
 
-const QuestionModal = (props: any) => {
+export interface Question{
+  difficulty: string;
+  category: string;
+  question: string;
+  correct_answer: string;
+  incorrect_answers: string[];
+}
+
+export interface QuestionList{
+  questions: Question[];
+}
+
+const QuestionModal = ({questions} : QuestionList) => {
   return (
     <div>
       <div
@@ -14,7 +26,7 @@ const QuestionModal = (props: any) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalToggleLabel">
-                {props.question.question}
+                {questions[0].question}
               </h1>
               <button
                 type="button"
