@@ -18,10 +18,13 @@ const shuffleAnswers = (correct:string, incorrect:string[]):string[]=>{
   return array;
 }
 
+
+
 const QuestionModal = ({questions} : QuestionList) => {
 
   const [questionNum, setQuestionNum] = useState(0)
   const [answers, setAnswers] = useState<string[]>([]);
+  const [rightAnswers, setRightAnswers] = useState(0);
   const totalQuestions = questions.length;
   const level = questions[0].difficulty;
 
@@ -29,12 +32,22 @@ const QuestionModal = ({questions} : QuestionList) => {
     setAnswers(shuffleAnswers(questions[questionNum].correct_answer, questions[questionNum].incorrect_answers));
   }, [questionNum, questions]);
 
+  const nextQuestion = (answer:string)=>{
+    if(answer === questions[questionNum].correct_answer){
+      setRightAnswers(rightAnswers + 1)
+    }
+    setQuestionNum(questionNum + 1);
+    if(questionNum >= totalQuestions){
+      console.log("no more questions");
+    }
+  }
+
   return (
     <div className="container">
       {/* header */}
       <div className="row">
         <div className="col-sm-12">
-          <h4>Question {questionNum}/{totalQuestions}</h4>
+          <h4>Question {questionNum+1}/{totalQuestions}</h4>
         </div>
       </div>
       <div className="row">
@@ -46,7 +59,10 @@ const QuestionModal = ({questions} : QuestionList) => {
         </div>
         {
           answers.map((answer)=>
-          <button type="button" className="btn btn-outline-secondary" onClick={()=>{setQuestionNum(questionNum+1)}}>{answer}</button>)
+          <div className="col-sm-12">
+            <button type="button" className="btn btn-outline-secondary" onClick={()=>{nextQuestion(answer)}}>{answer}</button>
+          </div>
+          )
         }
       </div>
 
