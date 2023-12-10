@@ -49,9 +49,10 @@ const QuestionModal = ({ questions }: QuestionList) => {
   };
 
   return (
-    <div className="container">
+    <>
       {!gameEnded ? (
         <>
+        <div className="container-fluid header">
           <div className="row">
             <div className="col-sm-12">
               <h4>
@@ -59,9 +60,12 @@ const QuestionModal = ({ questions }: QuestionList) => {
               </h4>
             </div>
           </div>
+        </div>
+        <div className="container">
+          
           <div className="row">
             <div className="col-sm-12">
-              <p>Level: {level}</p>
+              <p>Level: <span className={level}>{level}</span></p>
             </div>
             <div className="col-sm-12">
               <h1>{questions[questionNum].question}</h1>
@@ -80,11 +84,12 @@ const QuestionModal = ({ questions }: QuestionList) => {
               </div>
             ))}
           </div>
+        </div>
         </>
       ) : (
         <EndPage right={rightAnswers} total={totalQuestions} questions={questions}/>
       )}
-    </div>
+    </>
 
     // <div>
     //   <div

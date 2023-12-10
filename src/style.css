@@ -23,3 +23,21 @@
 .btn-div{
     justify-content: center;
 }
+
+.header{
+    background-color: #306bc9;
+    padding: 5px;
+    color: white;
+}
+
+.easy{
+    color: green;
+}
+
+.medium{
+    color: yellow;
+}
+
+.hard{
+    color: red;
+}
