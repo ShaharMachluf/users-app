@@ -42,7 +42,7 @@ const App = () => {
           <div className="container">
             <div className="row">
               <div className="col-sm-12">
-                <h1>TRIVIA TIME</h1>
+                <img src="./assets/trivia.jpg" alt="trivia" className="img-thumbnail"/>
               </div>
               <div className="col-sm-12">
               {isLoading ? (
