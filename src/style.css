@@ -98,3 +98,18 @@
 .end-text{
     text-align: center;
 }
+
+.timer{
+    border: 10px solid #306bc9;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    padding-top: 40px;
+    padding-left: 24px;
+}
+
+.timer-row{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}

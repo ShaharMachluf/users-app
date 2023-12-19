@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EndPage from "./EndPage";
-import logo from "../images/logo.png"
+import logo from "../images/logo.png";
 
 export interface Question {
   difficulty: string;
@@ -49,94 +49,134 @@ const QuestionModal = ({ questions }: QuestionList) => {
     }
   };
 
+  //timer
+  const Ref = useRef(null);
+
+  // The state for our timer
+  const [timer, setTimer] = useState("00:00");
+
+  const getTimeRemaining = (e) => {
+    const total = Date.parse(e) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    return {
+      total,
+      minutes,
+      seconds,
+    };
+  };
+
+  const startTimer = (e) => {
+    let { total, minutes, seconds } = getTimeRemaining(e);
+    if (total >= 0) {
+      // update the timer
+      // check if less than 10 then we need to
+      // add '0' at the beginning of the variable
+      setTimer(
+        (minutes > 9 ? minutes : "0" + minutes) +
+          ":" +
+          (seconds > 9 ? seconds : "0" + seconds)
+      );
+    }
+  };
+
+  const clearTimer = (e) => {
+    // If you adjust it you should also need to
+    // adjust the Endtime formula we are about
+    // to code next
+    setTimer("00:10");
+
+    // If you try to remove this line the
+    // updating of timer Variable will be
+    // after 1000ms or 1sec
+    if (Ref.current) clearInterval(Ref.current);
+    const id = setInterval(() => {
+      startTimer(e);
+    }, 1000);
+    Ref.current = id;
+  };
+
+  const getDeadTime = () => {
+    let deadline = new Date();
+
+    // This is where you need to adjust if
+    // you entend to add more time
+    deadline.setSeconds(deadline.getSeconds() + totalQuestions * 5);
+    return deadline;
+  };
+
+  // We can use useEffect so that when the component
+  // mount the timer will start as soon as possible
+
+  // We put empty array to act as componentDid
+  // mount only
+  useEffect(() => {
+    clearTimer(getDeadTime());
+  }, []);
+
   return (
     <>
-      {!gameEnded ? (
-        <>
-        <div className="container-fluid header">
-          <div className="row">
-            <div className="col-sm-12 header-content">
-              <h4>
-                Question {questionNum + 1}/{totalQuestions}
-              </h4>
-              <img src={logo} alt="logo" className="tiny-logo"/>
-            </div>
-          </div>
-        </div>
-        <div className="container">
-          
-          <div className="row">
-            <div className="col-sm-12">
-              <p>Level: <span className={level}>{level}</span></p>
-            </div>
-            <div className="col-sm-12">
-              <h1>{questions[questionNum].question}</h1>
-            </div>
-            {answers.map((answer) => (
-              <div key={answer} className="col-sm-12">
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary btn-lg answer"
-                  onClick={() => {
-                    nextQuestion(answer);
-                  }}
-                >
-                  {answer}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-        </>
+      {timer === "00:00" ? (
+        <EndPage
+          right={rightAnswers}
+          total={totalQuestions}
+          questions={questions}
+        />
       ) : (
-        <EndPage right={rightAnswers} total={totalQuestions} questions={questions}/>
+        <>
+          {!gameEnded ? (
+            <>
+              <div className="container-fluid header">
+                <div className="row">
+                  <div className="col-sm-12 header-content">
+                    <h4>
+                      Question {questionNum + 1}/{totalQuestions}
+                    </h4>
+                    <img src={logo} alt="logo" className="tiny-logo" />
+                  </div>
+                </div>
+              </div>
+              <div className="container">
+                <div className="row">
+                  <div className="col-sm-12">
+                    <p>
+                      Level: <span className={level}>{level}</span>
+                    </p>
+                  </div>
+                  <div className="col-sm-12">
+                    <h1>{questions[questionNum].question}</h1>
+                  </div>
+                  {answers.map((answer) => (
+                    <div key={answer} className="col-sm-12">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary btn-lg answer"
+                        onClick={() => {
+                          nextQuestion(answer);
+                        }}
+                      >
+                        {answer}
+                      </button>
+                    </div>
+                  ))}
+                  <div className="row timer-row">
+                    <div className="col-sm-12 timer">
+                      <h2>{timer}</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <EndPage
+              right={rightAnswers}
+              total={totalQuestions}
+              questions={questions}
+            />
+          )}
+        </>
       )}
     </>
-
-    // <div>
-    //   <div
-    //     className="modal fade"
-    //     id="exampleModalToggle"
-    //     aria-hidden="true"
-    //     aria-labelledby="exampleModalToggleLabel"
-    //     tabIndex={-1}
-    //   >
-    //     <div className="modal-dialog modal-dialog-centered">
-    //       <div className="modal-content">
-    //         <div className="modal-header">
-    //           <h1 className="modal-title fs-5" id="exampleModalToggleLabel">
-    //             {questions[0].question}
-    //           </h1>
-    //           <button
-    //             type="button"
-    //             className="btn-close"
-    //             data-bs-dismiss="modal"
-    //             aria-label="Close"
-    //           ></button>
-    //         </div>
-    //         <div className="modal-body">
-    //           Show a second modal and hide this one with the button below.
-    //         </div>
-    //         <div className="modal-footer">
-    //           <button
-    //             className="btn btn-primary"
-    //             data-bs-target="#exampleModalToggle2"
-    //             data-bs-toggle="modal"
-    //           >
-    //             Open second modal
-    //           </button>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <button
-    //     className="btn btn-primary"
-    //     data-bs-target="#exampleModalToggle"
-    //     data-bs-toggle="modal"
-    //   >
-    //     Open first modal
-    //   </button>
-    // </div>
   );
 };
 
