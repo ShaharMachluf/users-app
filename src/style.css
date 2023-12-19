@@ -28,6 +28,30 @@
     background-color: #306bc9;
     padding: 5px;
     color: white;
+    padding:5px;
+
+}
+
+.header-success{
+    background-color: green;
+    padding: 5px;
+    color: white;
+    padding:5px;
+
+}
+
+.header-fail{
+    background-color: red;
+    padding: 5px;
+    color: white;
+    padding:5px;
+
+}
+
+.header-content{
+    display: flex;
+    justify-content: space-between;
+
 }
 
 .easy{
@@ -40,4 +64,37 @@
 
 .hard{
     color: red;
+}
+
+.logo{
+    width: 25%;
+    margin-left: 37.5%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.tiny-logo{
+    width: 40px;
+}
+
+.answer{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.success{
+    color: green;
+}
+
+.fail{
+    color: red;
+}
+
+.title{
+    text-align: center;
+    font-weight: bold;
+}
+
+.end-text{
+    text-align: center;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import EndPage from "./EndPage";
+import logo from "../images/logo.png"
 
 export interface Question {
   difficulty: string;
@@ -54,10 +55,11 @@ const QuestionModal = ({ questions }: QuestionList) => {
         <>
         <div className="container-fluid header">
           <div className="row">
-            <div className="col-sm-12">
+            <div className="col-sm-12 header-content">
               <h4>
                 Question {questionNum + 1}/{totalQuestions}
               </h4>
+              <img src={logo} alt="logo" className="tiny-logo"/>
             </div>
           </div>
         </div>
@@ -74,7 +76,7 @@ const QuestionModal = ({ questions }: QuestionList) => {
               <div key={answer} className="col-sm-12">
                 <button
                   type="button"
-                  className="btn btn-outline-secondary"
+                  className="btn btn-outline-secondary btn-lg answer"
                   onClick={() => {
                     nextQuestion(answer);
                   }}

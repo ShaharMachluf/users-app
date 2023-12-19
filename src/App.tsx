@@ -2,6 +2,7 @@ import QuestionModal from "./components/QuestionModal";
 import { Question, QuestionList } from "./components/QuestionModal";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import logo from './images/splash_logo.png'
 
 const App = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -35,14 +36,14 @@ const App = () => {
             <div className="container">
             <div className="row">
               <div className="col-sm-12">
-                <h1 className="mainTitle">TRIVIA</h1>
+                <img src={logo} alt="logo" className="logo"/>
               </div>
               <div className="col-sm-5"></div>
               <div className="col-sm-2 btn-div">
               {isLoading ? (
           <div className="spinner-border"></div>
         ) : (
-          <button type="button" className="btn btn-light start-btn" onClick={()=>setStarted(true)}>Start</button>
+          <button type="button" className="btn btn-light start-btn btn-lg" onClick={()=>setStarted(true)}>Start</button>
         )}
                 
               </div>
